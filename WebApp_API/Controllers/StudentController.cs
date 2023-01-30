@@ -20,49 +20,12 @@ namespace WebApp_API.Controllers
 
         [HttpGet]
         [Route("[controller]")]
-        public IActionResult getAllStudents()
+        public async Task<IActionResult> getAllStudents()
         {
-            var students = studentRepository.GetStudents();
+            var students = await studentRepository.GetStudentsAsync();
 
-            /* var domainModelStudents = new List<Student>();
-
-             foreach(var student in students)
-             {
-                 domainModelStudents.Add(new Student 
-                 {
-                     ID = student.ID,
-                     FirstName = student.FirstName,
-                     LastName = student.LastName,
-                     DateOfBirth = student.DateOfBirth,
-                     Email = student.Email,
-                     Mobile  = student.Mobile,
-                     ProfileImageUrl =   student.ProfileImageUrl,
-                     GenderId = student.GenderId,
-                     address = new Address()
-                     {
-                         Id = student.address.Id,
-                         PhysicalAddress= student.address.PhysicalAddress,  
-                         PostalAddress= student.address.PostalAddress
-                     },
-                     Gender = new Gender()
-                     {
-                         Id = student.Gender.Id,
-                         Description = student.Gender.Description
-                     }
-
-                 });
-             } return Ok(domainModelStudents);*/
             return Ok(mapper.Map<List<Student>>(students));
         }
 
-
-       /* [HttpGet]
-        [Route("[controller]")]
-        public IActionResult GetAddresses()
-        {
-            var addresses = studentRepository.GetAddresses();
-
-            return Ok(mapper.Map<List<Address>>(addresses));
-        }*/
     }
 }

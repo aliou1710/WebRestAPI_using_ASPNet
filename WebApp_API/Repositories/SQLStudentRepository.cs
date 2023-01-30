@@ -14,13 +14,13 @@ namespace WebApp_API.Repositories
             this.context = context;
         }
 
-        public List<Student> GetStudents()
+        public async Task<List<Student>> GetStudentsAsync()
         {
            
                 //return context.Students.ToList();
 
                 //Include(nameof(Gender)): this is ad the details of gender who is associated to the students
-                return context.Students.Include(nameof(Gender)).Include(nameof(Address)).ToList();
+                return await context.Students.Include(nameof(Gender)).Include(nameof(Address)).ToListAsync();
   
 
         } 
