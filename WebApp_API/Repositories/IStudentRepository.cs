@@ -7,5 +7,7 @@ namespace WebApp_API.Repositories
         //on declare les methodes
         Task<List<Student>> GetStudentsAsync();
         //List<Address> GetAddresses();
+
+        Task<Student> GetOneStudentAsync(Guid studentId);
     }
 }

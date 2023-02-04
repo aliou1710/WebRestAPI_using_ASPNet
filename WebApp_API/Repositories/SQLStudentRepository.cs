@@ -23,11 +23,20 @@ namespace WebApp_API.Repositories
                 return await context.Students.Include(nameof(Gender)).Include(nameof(Address)).ToListAsync();
   
 
-        } 
+        }
 
-       /*public List<Address> GetAddresses()
+        public async Task<Student> GetOneStudentAsync(Guid studentId)
         {
-            return context.Address.ToList();
-        }*/
+
+            
+            return await context.Students.Include(nameof(Gender)).Include(nameof(Address)).FirstOrDefaultAsync(x=>x.ID ==studentId);
+
+
+        }
+
+        /*public List<Address> GetAddresses()
+         {
+             return context.Address.ToList();
+         }*/
     }
 }
