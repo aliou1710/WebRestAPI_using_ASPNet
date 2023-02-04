@@ -47,5 +47,28 @@ namespace WebApp_API.Controllers
             }
             
         }
+
+
+        [HttpPut]
+        [Route("[controller]/{studentId:guid}")]
+        public async Task<IActionResult> UpdateStudentAsync([FromRoute] Guid studentId, [FromBody] UpdateStudentRequest request)
+        {
+            //fetch student details
+            //si l'element à l'id exist (c'ad == à true)
+           if(await studentRepository.Exists(studentId))
+            {
+                //update Details
+             var updateStudent=   await studentRepository.UpdateStudent(studentId,mapper.Map<WebAppAPI.DataModels.Student>(request));
+             if(updateStudent != null)
+                {
+                    return Ok(mapper.Map<DomainModels.Student>(updateStudent));
+                }
+            }
+            
+           return NotFound();
+            
+
+        }
+
     }
 }

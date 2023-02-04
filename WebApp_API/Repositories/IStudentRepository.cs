@@ -9,5 +9,12 @@ namespace WebApp_API.Repositories
         //List<Address> GetAddresses();
 
         Task<Student> GetOneStudentAsync(Guid studentId);
+
+        //Gender is from datamodels
+        Task<List<Gender>> GetGendersAsync();
+
+        Task<bool> Exists(Guid studentId);
+        //Student from datamodels
+        Task<Student> UpdateStudent(Guid studentId, Student request);
     }
 }

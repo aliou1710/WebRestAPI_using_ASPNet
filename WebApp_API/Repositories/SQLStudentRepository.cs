@@ -38,5 +38,37 @@ namespace WebApp_API.Repositories
          {
              return context.Address.ToList();
          }*/
+
+        public async Task<List<Gender>> GetGendersAsync()
+        {
+            return await context.Gender.ToListAsync();
+        }
+
+        public async Task<bool> Exists(Guid studentId)
+        {
+          return await context.Students.AnyAsync(x => x.ID == studentId);
+           
+        }
+
+        public async Task<Student> UpdateStudent(Guid studentId, Student request)
+        {
+            var existingStudent = await GetOneStudentAsync(studentId);
+            if(existingStudent != null)
+            {
+                existingStudent.FirstName = request.FirstName;
+                existingStudent.LastName = request.LastName;
+                existingStudent.DateOfBirth = request.DateOfBirth;
+                existingStudent.Email = request.Email;
+                existingStudent.Mobile = request.Mobile;
+                existingStudent.GenderId = request.GenderId;
+                existingStudent.Address.PhysicalAddress = request.Address.PhysicalAddress;
+                existingStudent.Address.PostalAddress=request.Address.PostalAddress;
+
+                await context.SaveChangesAsync();
+                return existingStudent;
+                
+            }
+            return null;
+        }
     }
 }
