@@ -12,8 +12,9 @@ namespace WebApp_API.Controllers
     {
         private readonly IStudentRepository studentRepository;
         private readonly IMapper mapper;
-        public StudentController(IStudentRepository studentRepository,IMapper mapper)
-        {this.studentRepository = studentRepository;
+        public StudentController(IStudentRepository studentRepository, IMapper mapper)
+        {
+            this.studentRepository = studentRepository;
             this.mapper = mapper;
 
         }
@@ -31,21 +32,22 @@ namespace WebApp_API.Controllers
 
 
         [HttpGet]
-        [Route("[controller]/{studentId:guid}")]
+        [Route("[controller]/{studentId:guid}"),ActionName("getStudentAsynch")]
         public async Task<IActionResult> getStudentAsynch([FromRoute] Guid studentId)
         {
             //fetch student details
             var student = await studentRepository.GetOneStudentAsync(studentId);
 
             //return this student
-            if(student == null)
+            if (student == null)
             {
                 return NotFound();
             }
-            else{
+            else
+            {
                 return Ok(mapper.Map<Student>(student));
             }
-            
+
         }
 
 
@@ -55,20 +57,28 @@ namespace WebApp_API.Controllers
         {
             //fetch student details
             //si l'element à l'id exist (c'ad == à true)
-           if(await studentRepository.Exists(studentId))
+            if (await studentRepository.Exists(studentId))
             {
                 //update Details
-             var updateStudent=   await studentRepository.UpdateStudent(studentId,mapper.Map<WebAppAPI.DataModels.Student>(request));
-             if(updateStudent != null)
+                var updateStudent = await studentRepository.UpdateStudent(studentId, mapper.Map<WebAppAPI.DataModels.Student>(request));
+                if (updateStudent != null)
                 {
                     return Ok(mapper.Map<DomainModels.Student>(updateStudent));
                 }
             }
-            
-           return NotFound();
-            
+
+            return NotFound();
+
 
         }
 
+
+        [HttpPost]
+        [Route("[controller]/Add")]
+        public async Task<IActionResult> AddStudentAsync([FromBody] AddStudentRequest request)
+        {
+           var student =await studentRepository.AddStudent(mapper.Map<WebAppAPI.DataModels.Student>(request));
+            return CreatedAtAction(nameof(getStudentAsynch),new { studentId = student.ID},mapper.Map<Student>(student));
+        }
     }
 }

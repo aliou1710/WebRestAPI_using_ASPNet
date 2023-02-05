@@ -13,7 +13,8 @@ namespace WebApp_API.Profiles
             CreateMap<DataModels.Address, Address>().ReverseMap();
             CreateMap<DataModels.Gender, Gender>().ReverseMap();
             CreateMap<UpdateStudentRequest, DataModels.Student>().AfterMap<UpdateStudentRequestAfterMaps>();
-            
+            CreateMap<AddStudentRequest, DataModels.Student>().AfterMap<AddStudentRequestAfterMaps>();
+
         }
     }
 }

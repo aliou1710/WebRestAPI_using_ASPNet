@@ -70,5 +70,21 @@ namespace WebApp_API.Repositories
             }
             return null;
         }
+
+
+
+        public async Task<Student> AddStudent(Student request)
+        {
+            var student = await context.Students.AddAsync(request);
+            await context.SaveChangesAsync();
+            return student.Entity;
+        }
+
+        public async Task<Student> DeleteStudent(Guid studentId)
+        {
+            throw new NotImplementedException();
+        }
+
+
     }
 }

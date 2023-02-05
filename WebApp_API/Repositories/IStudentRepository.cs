@@ -16,5 +16,9 @@ namespace WebApp_API.Repositories
         Task<bool> Exists(Guid studentId);
         //Student from datamodels
         Task<Student> UpdateStudent(Guid studentId, Student request);
+
+        Task<Student> DeleteStudent(Guid studentId);
+
+        Task<Student> AddStudent(Student request);
     }
 }
