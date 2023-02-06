@@ -20,6 +20,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<StudentAdminContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("StudentAdminPortalDb")));
 //les controller que j'ai ajouté
 builder.Services.AddScoped<IStudentRepository,SQLStudentRepository>();
+builder.Services.AddScoped<IImageRepository, LocalStorageImageRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

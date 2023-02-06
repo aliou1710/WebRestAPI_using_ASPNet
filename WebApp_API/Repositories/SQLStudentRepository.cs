@@ -96,5 +96,17 @@ namespace WebApp_API.Repositories
            
 
         }
+
+        public async Task<bool> UpdateProfileImage(Guid studentId, string profileImageUrl)
+        {
+            var student = await GetOneStudentAsync(studentId);
+            if( student != null)
+            {
+                student.ProfileImageUrl = profileImageUrl;
+                await context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
     }
 }

@@ -12,11 +12,12 @@ namespace WebApp_API.Controllers
     {
         private readonly IStudentRepository studentRepository;
         private readonly IMapper mapper;
-        public StudentController(IStudentRepository studentRepository, IMapper mapper)
+        private readonly IImageRepository imageRepository;
+        public StudentController(IStudentRepository studentRepository, IMapper mapper,IImageRepository imageRepository)
         {
             this.studentRepository = studentRepository;
             this.mapper = mapper;
-
+            this.imageRepository= imageRepository;
         }
 
 
@@ -94,6 +95,27 @@ namespace WebApp_API.Controllers
             return NotFound();
         }
 
+
+        [HttpPost]
+        [Route("[controller]/{studentId:guid}/upload-image")]
+        public async Task<IActionResult> UploadImage([FromRoute] Guid studentId, IFormFile profileImage)
+        {
+            //chec if student exists
+            if (await studentRepository.Exists(studentId))
+            {
+                //Upload Image to local storage
+                var filename = Guid.NewGuid()+Path.GetExtension(profileImage.FileName);
+                var fileImagePath =await imageRepository.Upload(profileImage, filename);
+                //update the profile image path in the database
+                if (await studentRepository.UpdateProfileImage(studentId, fileImagePath)){
+                    return Ok(fileImagePath);
+                }
+                //else
+                return StatusCode(StatusCodes.Status500InternalServerError,"Error uploading image");
+                
+            }
+            return NotFound();
+        }
 
     }
 }
