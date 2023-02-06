@@ -80,11 +80,21 @@ namespace WebApp_API.Repositories
             return student.Entity;
         }
 
+       
+
         public async Task<Student> DeleteStudent(Guid studentId)
         {
-            throw new NotImplementedException();
+            var student = await GetOneStudentAsync(studentId);
+            if( student != null)
+            {
+                context.Students.Remove(student);
+                await context.SaveChangesAsync();
+                return student;
+            }
+
+            return null;
+           
+
         }
-
-
     }
 }

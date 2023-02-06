@@ -80,5 +80,20 @@ namespace WebApp_API.Controllers
            var student =await studentRepository.AddStudent(mapper.Map<WebAppAPI.DataModels.Student>(request));
             return CreatedAtAction(nameof(getStudentAsynch),new { studentId = student.ID},mapper.Map<Student>(student));
         }
+
+        [HttpDelete]
+        [Route("[controller]/{studentId:guid}"), ActionName("getStudentAsynch")]
+        public async Task<IActionResult> DeleteStudentAsync([FromRoute] Guid studentId)
+        {
+            if( await studentRepository.Exists(studentId))
+            {
+                //Delete the student
+                var student = await studentRepository.DeleteStudent(studentId);
+                return Ok(mapper.Map<WebAppAPI.DataModels.Student>(student));
+            }
+            return NotFound();
+        }
+
+
     }
 }
