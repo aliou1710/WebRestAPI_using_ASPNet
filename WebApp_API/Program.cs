@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using WebApp_API.Repositories;
 using WebAppAPI.DataModels;
 
@@ -39,6 +40,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath,"Ressources")),
+    RequestPath ="/Ressources"
+});
 
 //ajouter
 app.UseCors("angularApplication");
